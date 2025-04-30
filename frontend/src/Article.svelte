@@ -1,17 +1,16 @@
 <script>
-    export let headline;
-    export let snippet;
-    export let image = null;
-    export let caption = null;
+    // get data from props
+    // data {section, headline, snippet, image, caption}
+    export let data;
 </script>
 
 <article class="item">
-    <h1>{headline}</h1>
+    <h1>{data.headline}</h1>
     <p>
-        {snippet}
+        {data.snippet}
     </p>
-    {#if image}
-    <img src={image} alt={caption}>
+    {#if data.image}
+    <img src={data.image} alt={data.caption}>
     {:else}
     {/if}
 </article>
