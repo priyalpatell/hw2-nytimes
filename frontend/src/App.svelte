@@ -1,31 +1,31 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  //import { articles } from './lib/content' // imports static content
-  import { getArticles } from './lib/getArticles'
+  // import { articles } from './lib/content' // imports static content
+  import { formatArticles } from './lib/formatArticles'
+  import { queryArticles } from './lib/queryArticles'
   import type { Article } from './lib/Article'
   import ArtComp from './lib/ArtComp.svelte'
   import testJson from './lib/content.json'
   
   let apiKey: string = '';
+  let articles: any;
 
   // Turn article data into an array and display dynamically
-  let articles: Article[];
-
   onMount(async () => {
     try {
       const res = await fetch('/api/key');
       const data = await res.json();
       apiKey = data.apiKey;
-      // fetch articles from backend
-      const art = await fetch('/get/articles/' + apiKey);
-      const artJson = await art.json();
-      // process articles in front
-      articles = getArticles(artJson);
+
+      const resultD = await queryArticles(apiKey, "Davis CA");
+      let articlesD = await formatArticles(resultD["docs"]);
+      const resultS = await queryArticles(apiKey, "Sacramento CA");
+      let articlesS = await formatArticles(resultS["docs"]);
+      articles = articlesS.concat(articlesD)
     } catch (error) {
       console.error('Failed to fetch API key:', error);
     }
   });
-
 </script>
 
 <main>
