@@ -7,7 +7,6 @@
   import ArtComp from './lib/ArtComp.svelte'
   import testJson from './lib/content.json'
   
-  let apiKey: string = '';
   let articles: any;
 
   // Turn article data into an array and display dynamically
@@ -15,7 +14,7 @@
     try {
       const res = await fetch('/api/key');
       const data = await res.json();
-      apiKey = data.apiKey;
+      let apiKey = data.apiKey;
 
       const resultD = await queryArticles(apiKey, "Davis CA");
       let articlesD = await formatArticles(resultD["docs"]);
@@ -72,9 +71,4 @@
     </section>
   {/if}
   </div>
-
-  <p>
-    Your API Key: <strong>{apiKey}</strong>
-  </p>
-
 </main>
