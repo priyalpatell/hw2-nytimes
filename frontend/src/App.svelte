@@ -5,7 +5,6 @@
   import { queryArticles } from './lib/queryArticles'
   import type { Article } from './lib/Article'
   import ArtComp from './lib/ArtComp.svelte'
-  import testJson from './lib/content.json'
   
   let articles: any;
 

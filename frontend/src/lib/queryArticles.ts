@@ -16,6 +16,6 @@ export async function queryArticles(key: string, city: string) {
     return result.response;
   } catch (error: any) {
     console.log("Error: ", error.message);
-    throw error;
+    throw new Error("Query Failed");
   }
 }
