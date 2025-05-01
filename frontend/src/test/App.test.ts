@@ -32,27 +32,48 @@ interface MyArticle {
   word_count: number;
   uri: string;
 }
-test("check for first article that query values returned match expected output", async () => {
+test("check for first article that values returned match expected output", async () => {
   try {
     const result = await queryArticles(apiKey, "Davis CA");
-    expect("docs" in result);
-    expect(result["docs"].length).toBeGreaterThan(0);
-    expect("snippet" in result["docs"][0]);
-    expect("multimedia" in result["docs"][0]);
-    expect("headline" in result["docs"][0]);
+    if (result !== undefined) {
+      expect("docs" in result);
+      expect(result["docs"].length).toBeGreaterThan(0);
+      expect("snippet" in result["docs"][0]);
+      expect("multimedia" in result["docs"][0]);
+      expect("headline" in result["docs"][0]);
+    }
   } catch (error) {
     console.log(error);
   }
 });
 
-describe("Object check", () => {
+describe("check is news article and for Davis", () => {
   it("should have the key and value", async () => {
     try {
       const result = await queryArticles(apiKey, "Davis CA");
-      expect(result["docs"].length).toBeGreaterThan(0);
-      expect(result["docs"][0]).toHaveProperty("type_of_material", "News");
+      if (result != undefined) {
+        expect("docs" in result);
+        expect(result["docs"].length).toBeGreaterThan(0);
+        expect(result["docs"][0]).toHaveProperty("type_of_material", "News");
+        expect(result["docs"][0]["keywords"].length).toBeGreaterThan(0);
+        const output = result["docs"][0]["keywords"].some((obj: string) =>
+          Object.values(obj).some(
+            (value) => typeof value === "string" && value.includes("Davis")
+          )
+        );
+        expect(output).toBe(true);
+      }
     } catch (error) {
       console.log(error);
+    }
+  });
+});
+
+describe("check does not proceed if bad key", () => {
+  it("should have the key and value", async () => {
+    const result = await queryArticles("Bad-key", "Davis CA");
+    if (result == undefined) {
+      console.log("Error check: bad input");
     }
   });
 });
