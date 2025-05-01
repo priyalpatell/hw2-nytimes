@@ -12,6 +12,8 @@
       console.error('Failed to fetch API key:', error);
     }
   });
+  
+  
 </script>
 
 <main>

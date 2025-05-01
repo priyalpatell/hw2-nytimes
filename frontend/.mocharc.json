@@ -1,0 +1,5 @@
+{
+  "ext": "ts,tsx",
+  "require": ["ts-node/register"],
+  "spec": "src/test/*.ts"
+}
