@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { articles } from './lib/content' // imports static content
+  //import { articles } from './lib/content' // imports static content
   import { getArticles } from './lib/getArticles'
   import type { Article } from './lib/Article'
   import ArtComp from './lib/ArtComp.svelte'
@@ -9,7 +9,7 @@
   let apiKey: string = '';
 
   // Turn article data into an array and display dynamically
-  //let articles: Array<Article>;
+  let articles: Article[];
 
   onMount(async () => {
     try {
@@ -17,18 +17,10 @@
       const data = await res.json();
       apiKey = data.apiKey;
       // fetch articles from backend
-      // const art = await fetch('/get/articles/' + apiKey);
-      // const artJson = await art.json();
-      // process articles in backend
-      //  articles = await new Promise((resolve, reject) => {
-      //   try {
-      //       const result = getArticles(testJson);
-      //       resolve(result);
-      //   } catch (err) {
-      //     console.error('Failed to parse JSON:', err);
-      //     reject(err);
-      //   }
-      // });
+      const art = await fetch('/get/articles/' + apiKey);
+      const artJson = await art.json();
+      // process articles in front
+      articles = getArticles(artJson);
     } catch (error) {
       console.error('Failed to fetch API key:', error);
     }
@@ -50,31 +42,35 @@
     </div>
   </header>
 
+
   <div class="grid-container">
+    {#if articles}
     <section class="main">
       <!-- filters sectioned articles -->
       {#each articles.filter(a => a.section === 'main') as article}
         <ArtComp data={article} />
       {/each}
+
     </section>
 
   <hr>
   
-  <section class="left">
+    <section class="left">
     <!-- filters sectioned articles -->
     {#each articles.filter(a => a.section === 'left') as article}
         <ArtComp data={article} />
       {/each}
 
-  </section>
+    </section>
   
-  <section class="right">
+    <section class="right">
     <!-- filters sectioned articles -->
     {#each articles.filter(a => a.section === 'right') as article}
         <ArtComp data={article} />
       {/each}
 
     </section>
+  {/if}
   </div>
 
   <p>
