@@ -1,3 +1,4 @@
+
 import type { Article } from './Article';
 
 export function getArticles(json: any): Article[] {
