@@ -3,7 +3,7 @@ import { expect } from "chai";
 import * as dotenv from "dotenv";
 
 // Mock Flask Get API Key Behavior
-dotenv.config();
+dotenv.config({ path: "../.env" });
 let apiKey = String(process.env.NYT_API_KEY);
 
 describe("getArticles", () => {
