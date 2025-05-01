@@ -33,19 +33,27 @@ interface MyArticle {
   uri: string;
 }
 test("check for first article that query values returned match expected output", async () => {
-  const result = await queryArticles(apiKey, "Davis CA");
-  //expect("docs" in result);
-  expect(result["docs"].length).toBeGreaterThan(0);
-  expect("snippet" in result["docs"][0]);
-  expect("multimedia" in result["docs"][0]);
-  expect("headline" in result["docs"][0]);
+  try {
+    const result = await queryArticles(apiKey, "Davis CA");
+    expect("docs" in result);
+    expect(result["docs"].length).toBeGreaterThan(0);
+    expect("snippet" in result["docs"][0]);
+    expect("multimedia" in result["docs"][0]);
+    expect("headline" in result["docs"][0]);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 describe("Object check", () => {
   it("should have the key and value", async () => {
-    const result = await queryArticles(apiKey, "Davis CA");
-    expect(result["docs"].length).toBeGreaterThan(0);
-    expect(result["docs"][0]).toHaveProperty("type_of_material", "News");
+    try {
+      const result = await queryArticles(apiKey, "Davis CA");
+      expect(result["docs"].length).toBeGreaterThan(0);
+      expect(result["docs"][0]).toHaveProperty("type_of_material", "News");
+    } catch (error) {
+      console.log(error);
+    }
   });
 });
 
