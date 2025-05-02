@@ -6,32 +6,12 @@ import { articles } from "./content";
 import { queryArticles } from "../lib/queryArticles";
 import * as dotenv from "dotenv";
 import { JSDOM } from "jsdom";
+import ArtComp from "../lib/ArtComp.svelte";
+import "@testing-library/jest-dom";
 
 dotenv.config({ path: "../.env" });
 let apiKey = String(process.env.NYT_API_KEY);
 
-// test("App", async () => {
-//   render(App);
-// });
-
-interface MyArticle {
-  web_url: string;
-  snippet: string;
-  print_page: number;
-  print_section: string;
-  source: string;
-  multimedia: any;
-  headline: any;
-  keywords: any;
-  pub_date: string;
-  document_type: string;
-  desk: string;
-  section_name: string;
-  byline: any;
-  type_of_material: string;
-  word_count: number;
-  uri: string;
-}
 test("check for first article that values returned match expected output", async () => {
   try {
     const result = await queryArticles(apiKey, "Davis CA");
@@ -84,4 +64,44 @@ test("check articles with additional fields are being stored and formatted corre
   expect("snippet" in result[0]);
   expect("multimedia" in result[0]);
   expect("headline" in result[0]);
+});
+
+describe("ArtComp", () => {
+  it("should render the component", () => {
+    const data = {
+      headline: "Test Headline",
+      snippet: "Test snippet text.",
+      image: "https://example.com/image.jpg",
+      caption: "Test caption",
+    };
+
+    const { getByText } = render(ArtComp, {
+      props: {
+        data,
+      },
+    });
+
+    console.log(typeof document);
+
+    expect(getByText("Test Headline")).toBeInTheDocument();
+    expect(getByText("Test snippet text.")).toBeInTheDocument();
+  });
+});
+
+describe("ArtComp", () => {
+  it("should not render image if undefined", () => {
+    const data = {
+      headline: "No Image Headline",
+      snippet: "No image here.",
+      image: undefined,
+      caption: "This should not appear",
+    };
+
+    const { getByText, queryByRole } = render(ArtComp, {
+      props: { data },
+    });
+
+    expect(getByText("No Image Headline")).toBeTruthy();
+    expect(queryByRole("img")).toBeNull();
+  });
 });
