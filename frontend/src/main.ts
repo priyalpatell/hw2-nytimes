@@ -6,7 +6,9 @@ const app = mount(App, {
   target: document.getElementById('app')!,
 })
 
-// Get today's date
+/**
+ * Puts today's date onto the webpage
+ */
 let date: Date = new Date();
 let formattedDate: String = new Intl.DateTimeFormat('en-US', { 
     weekday: 'long', 

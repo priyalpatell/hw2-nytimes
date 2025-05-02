@@ -1,14 +1,21 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  // import { articles } from './lib/content' // imports static content
   import { formatArticles } from './lib/formatArticles'
   import { queryArticles } from './lib/queryArticles'
   import type { Article } from './lib/Article'
   import ArtComp from './lib/ArtComp.svelte'
   
-  let articles: any;
+  let articles: Article[];
 
-  // Turn article data into an array and display dynamically
+  /**
+   * 1. Fetch API Key
+   *
+   * 2. Query NYT API for Davis and Sacramento articles
+   *
+   * 3. Using the result of the queries, format into Article objects
+   * 
+   * 4. Use the Article objects to display on website based on the section field.
+   */
   onMount(async () => {
     try {
       const res = await fetch('/api/key');
