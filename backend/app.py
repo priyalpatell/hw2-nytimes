@@ -9,36 +9,6 @@ template_path = os.getenv('TEMPLATE_PATH','templates')
 app = Flask(__name__, static_folder=static_path, template_folder=template_path)
 CORS(app)
 
-# @app.route('/format/articles/<data>')
-# def format_articles(data):
-
-# def get_data(key, city):
-#     base_url = "https://api.nytimes.com/svc/search/v2/articlesearch.json?"
-#     filters = 'fq=timesTag.location:'+city
-#     query_url = base_url + filters + "&api-key=" + key
-#     result = requests.get(query_url)
-#     return result
-
-    
-# @app.route('/get/articles/<key>') 
-# def get_articles(key):
-#     resultD = get_data(key, "Davis")
-#     resultS = get_data(key, "Sacramento")
-#     if resultD.status_code != 200 and resultS.status_code != 200:
-#         return resultD
-    
-#     result = []
-#     try:
-#         result.extend((resultD.json())['response']['docs'])
-#     except:
-#         pass
-#     try:
-#         result.extend((resultS.json())['response']['docs'])
-#     except:
-#         pass
-#     return {"RESULT": result}
-
-    
 @app.route('/api/key')
 def get_key():
     return jsonify({'apiKey': os.getenv('NYT_API_KEY')})
