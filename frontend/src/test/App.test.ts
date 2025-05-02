@@ -1,11 +1,8 @@
 import { test, expect, it, describe, assert } from "vitest";
-import { render } from "@testing-library/svelte";
-import App from "../App.svelte";
 import { formatArticles } from "../lib/formatArticles";
 import { articles } from "./content";
 import { queryArticles } from "../lib/queryArticles";
 import * as dotenv from "dotenv";
-import { JSDOM } from "jsdom";
 
 dotenv.config({ path: "../.env" });
 let apiKey = String(process.env.NYT_API_KEY);
@@ -32,6 +29,8 @@ interface MyArticle {
   word_count: number;
   uri: string;
 }
+
+/* Test queryArticles() returning output */
 test("check for first article that query values returned match expected output", async () => {
   try {
     const result = await queryArticles(apiKey, "Davis CA");
@@ -45,6 +44,7 @@ test("check for first article that query values returned match expected output",
   }
 });
 
+/* Test queryArticles() to have key value*/
 describe("Object check", () => {
   it("should have the key and value", async () => {
     try {
@@ -57,6 +57,8 @@ describe("Object check", () => {
   });
 });
 
+
+/* Test formatArticles() */
 test("check articles with additional fields are being stored and formatted correctly", () => {
   const result = formatArticles(articles);
   expect(result.length).toBeGreaterThan(0);
@@ -64,3 +66,20 @@ test("check articles with additional fields are being stored and formatted corre
   expect("multimedia" in result[0]);
   expect("headline" in result[0]);
 });
+
+/* Test formatArticles() sections */
+test("formatArticles assigns sections in cyclic order: main, left, right", () => {
+  const mockArticles = Array.from({ length: 6 }).map((_, i) => ({
+    headline: { main: `Headline ${i}` },
+    snippet: `Snippet ${i}`,
+    multimedia: [],
+  }));
+
+  const formatted = formatArticles(mockArticles);
+  const expectedSections = ["main", "left", "right", "main", "left", "right"];
+
+  formatted.forEach((article, i) => {
+    expect(article.section).toBe(expectedSections[i]);
+  });
+});
+

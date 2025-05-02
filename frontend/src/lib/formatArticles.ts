@@ -6,7 +6,7 @@ export function formatArticles(json: any): Article[] {
     section: sections[index % sections.length],
     headline: item.headline.main,
     snippet: item.snippet,
-    image: item.multimedia?.default.url || undefined,
+    image: item.multimedia?.default?.url || undefined,
     caption: item.multimedia?.caption || undefined,
   }));
 }
