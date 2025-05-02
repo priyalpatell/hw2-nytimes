@@ -9,8 +9,6 @@ export default defineConfig(({ mode }) => ({
       ? {
           environment: "jsdom",
           globals: true,
-          setupFiles: ["./src/test/setupTests.ts"],
-          include: ["src/test/**/*.test.ts"],
         }
       : undefined,
   resolve: {
